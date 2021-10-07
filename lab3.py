@@ -1,5 +1,6 @@
 import time
 import matplotlib.pyplot as plt
+import numpy as np 
 import os
 import busio
 import digitalio
@@ -29,7 +30,7 @@ def dataGathering():
     smoothVolt.append(voltArr[len(voltArr)-1])
     
     #plot the 1s of data to prove the actual frequency output by the function generator (we used our generator from lab 2 on another Pi)
-    plt.plot(timeArr, voltArr, 'o', color="black")
+    plt.plot(timeArr, voltArr)
     plt.show()
 
     return voltArr, smoothVolt, timeArr
@@ -51,8 +52,8 @@ def characterizeWaveform(rawVoltageList, voltArr, timeArr):
     #test if it is a square wave
     numMin = 0
     numMax = 0
-    tolerance = (max-min) * 0.1 #tolerance to account for noise (experimentally determined)
-    for i in range(size): #determine amount of points that lie on extremes
+    tolerance = (max-min) * 0.1 #tolerance  for noise 
+    for i in range(size): #determine amount of points on extremes
         if max - voltArr[i] < tolerance:
             numMax = numMax + 1
         elif voltArr[i] - min < tolerance:
@@ -178,3 +179,5 @@ def sinTriangleFreq (voltArr, timeArr, min, max):
 while True:
     rawVoltageList, smoothVolt, timeArr = dataGathering()
     characterizeWaveform(rawVoltageList, smoothVolt, timeArr)
+  
+        
