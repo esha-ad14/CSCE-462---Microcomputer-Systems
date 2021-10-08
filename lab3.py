@@ -1,6 +1,6 @@
 import time
-import matplotlib.pyplot as plt
-import numpy as np 
+import matplotlib.pyplot as plt 
+#import numpy as np 
 import os
 import busio
 import digitalio
@@ -30,8 +30,8 @@ def dataGathering():
     smoothVolt.append(voltArr[len(voltArr)-1])
     
     #plot the 1s of data to prove the actual frequency output by the function generator (we used our generator from lab 2 on another Pi)
-    plt.plot(timeArr, voltArr)
-    plt.show()
+    #plt.plot(timeArr, voltArr)
+    #  plt.show()
 
     return voltArr, smoothVolt, timeArr
 
@@ -104,14 +104,16 @@ def characterizeWaveform(rawVoltageList, voltArr, timeArr):
     #obtain average change between points
     for i in range(len(edgeArr)):
         sum = sum + edgeArr[i]
-    IncrAvg = sum / len(edgeArr)
+    print(len(edgeArr))
+#     IncrAvg = sum / len(edgeArr)
+    IncrAvg = sum / 3
     #count the number of changes in two consecutive points that equal the average for the edgeArr
     nIncrAvg = 0
     tolerance = (max-min) * 0.0075 #tolerance to account for noise (experimentally determined)
     for i in range(len(edgeArr)):
         if abs(IncrAvg - edgeArr[i]) < tolerance:
             nIncrAvg = nIncrAvg + 1
-    if nIncrAvg > len(edgeArr) * 0.5: #if 50% (experimentally determined) of the increases were equal to the average it is a triangle
+    if nIncrAvg >  len(edgeArr) * 0.5: #if 50% (experimentally determined) of the increases were equal to the average it is a triangle
         print("Triangle")
         sinTriangleFreq(voltArr, timeArr, min, max)
     else:
@@ -151,7 +153,10 @@ def squareFreq(voltArr, timeArr, min, max):
     minTime = timeArr[minFinish] - timeArr[minStart]
     if maxTime > minTime:
         freq = 1.0 / 2.0 / maxTime
+    elif(maxTime == minTime):
+        print('')
     else:
+        print(minTime)
         freq = 1.0 / 2.0 / minTime
     print(str(freq) + "Hz")
 
